@@ -1,0 +1,8 @@
+<%= form_tag(merge_articles_path(@article.id)) do %>
+  <h4><%= _("Merge Articles") %></h4>
+  <div class='class'>
+    <span>Article ID</span>
+    <%= text_field_tag 'merge_with', nil, { :autocomplete => 'off', :style => 'width: 22%'} %>
+  </div>
+  <%= submit_tag 'Merge' %>
+<% end %>
