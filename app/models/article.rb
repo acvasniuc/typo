@@ -419,8 +419,8 @@ class Article < Content
   def merge_with(other_article_id)
     other_article = Article.find_by_id(other_article_id)
     return if other_article.nil?
-    body = "" if body.nil?
-    body += other_article.body unless other_article.body.nil?
+    self.body = "" if self.body.nil?
+    self.body = self.body + other_article.body unless other_article.body.nil?
     other_article.comments.each do |other_comment|
       new_comment = other_comment.dup
       new_comment.id = nil
