@@ -168,6 +168,11 @@ class User < ActiveRecord::Base
     profile.label == Profile::ADMIN
   end
 
+  def can_merge?(article=nil)
+    return false if article.nil?
+    admin? && !article.new_record?
+  end
+
   protected
 
   # Apply SHA1 encryption to the supplied password.

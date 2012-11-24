@@ -41,6 +41,13 @@ Given /^the blog is set up$/ do
                 :profile_id => 1,
                 :name => 'admin',
                 :state => 'active'})
+
+  User.create!({:login => 'publisher',
+                :password => 'aaaaaaaa',
+                :email => 'joe2@snow.com',
+                :profile_id => 2,
+                :name => 'publisher',
+                :state => 'active'})
 end
 
 And /^I am logged into the admin panel$/ do
@@ -53,6 +60,26 @@ And /^I am logged into the admin panel$/ do
   else
     assert page.has_content?('Login successful')
   end
+end
+
+And /^I am not logged$/ do
+  visit '/accounts/logout'
+end
+
+And /^I am logged into the publisher panel$/ do
+  visit '/accounts/login'
+  fill_in 'user_login', :with => 'publisher'
+  fill_in 'user_password', :with => 'aaaaaaaa'
+  click_button 'Login'
+  if page.respond_to? :should
+    page.should have_content('Login successful')
+  else
+    assert page.has_content?('Login successful')
+  end
+end
+
+And /^I ola$/ do
+  #iraise page.body
 end
 
 # Single-line step scoper
@@ -124,6 +151,15 @@ end
 
 When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"$/ do |path, field|
   attach_file(field, File.expand_path(path))
+end
+
+Then /^I shoud see "(.*?)" (.*?)$/ do |text, many_times|
+  count = case many_times
+  when 'once' then 1
+  when 'twice' then 2
+  end
+
+  page.body.scan(text).length.should == count
 end
 
 Then /^(?:|I )should see "([^"]*)"$/ do |text|

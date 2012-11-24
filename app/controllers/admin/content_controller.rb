@@ -113,6 +113,19 @@ class Admin::ContentController < Admin::BaseController
     render :text => nil
   end
 
+  def merge
+    redirect_to :action => :index and return unless current_user.admin?
+
+    article_id = (params[:id] || 0).to_i
+    other_article_id = (params[:merge_with] || 0).to_i
+
+    unless article_id == other_article_id
+      article = Article.find_by_id(article_id)
+      article.merge_with(other_article_id) if article.present?
+    end
+    redirect_to :action => :index
+  end
+
   protected
 
   def get_fresh_or_existing_draft_for_article
