@@ -112,6 +112,8 @@ Rails.application.routes.draw do
     match "/admin/#{i}(/:action(/:id))", :to => "admin/#{i}", :action => nil, :id => nil, :format => false
   end
 
+  post 'admin/content/merge/:id' => "content#merge", :as => "merge_articles"
+
   # default
   root :to  => 'articles#index', :format => false
 
